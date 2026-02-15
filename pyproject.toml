@@ -1,0 +1,50 @@
+[project]
+name = "library"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "alembic>=1.18.4",
+    "asyncpg>=0.31.0",
+    "fastapi[standard]>=0.128.6",
+    "gunicorn>=25.0.3",
+    "pydantic>=2.12.5",
+    "sqlalchemy[asyncio]>=2.0.46",
+    "uvicorn>=0.40.0",
+]
+
+[dependency-groups]
+dev = [
+    "black>=26.1.0",
+    "isort>=7.0.0",
+    "pre-commit>=4.5.1",
+]
+
+# [tool.uv]
+# exclude-newer = "1 week"
+
+[tool.isort]
+# isort settings
+profile = "black"
+line_length = 100
+
+[tool.black]
+# Black settings
+line-length = 100
+skip-string-normalization = true
+include = "./*.py"
+extend-exclude = '''
+/(\\.venv|\\.git|__pycache__)/
+'''
+force-exclude = '''
+/(\\.venv|\\.git|__pycache__)/
+'''
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
