@@ -6,6 +6,7 @@ from dependencies.session import AsyncSessionDp
 from fastapi import Depends
 from schemas import BookCreate
 
+from .exceptions import BookNotFoundError
 from .repositories import BookRepository
 
 
@@ -30,8 +31,13 @@ async def get_books_list(book_repo: RepositoryDp) -> list[Book]:
 BooksListDp = Annotated[list[Book], Depends(get_books_list)]
 
 
-async def get_book_by_id(book_id: UUID, book_repo: RepositoryDp) -> Book | None:
-    return await book_repo.get_by_id(book_id=book_id)
+async def get_book_by_id(book_id: UUID, book_repo: RepositoryDp) -> Book:
+    book = await book_repo.get_by_id(book_id=book_id)
+    if book is not None:
+        return book
+    raise BookNotFoundError(
+        book_id=book_id,
+    )
 
 
 BookIDDp = Annotated[Book, Depends(get_book_by_id)]
