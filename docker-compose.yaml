@@ -1,18 +1,40 @@
 services:
   db:
     image: postgres:18.1-trixie
+    container_name: db
     restart: unless-stopped
     env_file:
-      - books_library/config/envs/.env
+      - books_library/config/envs/.env.postgres-dev
     ports:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/18/docker
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - my_network
+  web:
+    build:
+      context: .
+      dockerfile: docker_build/books_library/Dockerfile
+    container_name: web
+    restart: unless-stopped
+    env_file:
+      - books_library/config/envs/.env.postgres-dev
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://web:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
     networks:
       - my_network
 
