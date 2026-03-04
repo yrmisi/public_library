@@ -28,6 +28,7 @@ dev = [
 # isort settings
 profile = "black"
 line_length = 100
+src_paths  = ["books_library"]
 
 [tool.black]
 # Black settings
