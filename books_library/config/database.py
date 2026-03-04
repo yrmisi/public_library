@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
 
-from .path import BASE_DIR
+from .path import ENVS_DIR
 
 
 class SQLAlchemyConfig(BaseModel):
@@ -22,7 +22,7 @@ class DatabaseConfig(BaseSettings):
     sqla: SQLAlchemyConfig = SQLAlchemyConfig()
 
     model_config = SettingsConfigDict(
-        env_file=BASE_DIR / "envs" / ".env",
+        env_file=ENVS_DIR / ".env.postgres-dev",
         env_file_encoding="utf-8",
         extra="ignore",
     )
