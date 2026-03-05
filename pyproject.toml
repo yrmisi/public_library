@@ -29,6 +29,9 @@ dev = [
 profile = "black"
 line_length = 100
 src_paths  = ["books_library"]
+known_first_party = ["books_library"]
+known_third_party = ["fastapi", "sqlalchemy", "pydantic", "alembic"]
+
 
 [tool.black]
 # Black settings
