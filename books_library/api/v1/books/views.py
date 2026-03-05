@@ -1,5 +1,6 @@
-from database import Book
 from fastapi import APIRouter, status
+
+from database.models import Book
 from schemas import BookCreate, BookRead
 
 from .dependencies import BookCreateDp, BookIDDp, BooksListDp

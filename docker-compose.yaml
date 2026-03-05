@@ -4,7 +4,7 @@ services:
     container_name: db
     restart: unless-stopped
     env_file:
-      - books_library/config/envs/.env.postgres-dev
+      - books_library/config/envs/.env.postgres-prod
     ports:
       - "5432:5432"
     volumes:
@@ -21,9 +21,10 @@ services:
       context: .
       dockerfile: docker_build/books_library/Dockerfile
     container_name: web
+    shm_size: "256mb" # обязательно при опции "--worker-tmp-dir /dev/shm" в Dockerfile
     restart: unless-stopped
     env_file:
-      - books_library/config/envs/.env.postgres-dev
+      - books_library/config/envs/.env.postgres-prod
     ports:
       - "8000:8000"
     depends_on:
