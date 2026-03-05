@@ -1,9 +1,10 @@
 from typing import Annotated
 from uuid import UUID
 
-from database import Book
-from dependencies.session import AsyncSessionDp
 from fastapi import Depends
+
+from database.models import Book
+from dependencies.session import AsyncSessionDp
 from schemas import BookCreate
 
 from .exceptions import BookNotFoundError
