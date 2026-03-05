@@ -22,7 +22,7 @@ class DatabaseConfig(BaseSettings):
     sqla: SQLAlchemyConfig = SQLAlchemyConfig()
 
     model_config = SettingsConfigDict(
-        env_file=ENVS_DIR / ".env.postgres-dev",
+        env_file=ENVS_DIR / ".env.postgres-prod",
         env_file_encoding="utf-8",
         extra="ignore",
     )

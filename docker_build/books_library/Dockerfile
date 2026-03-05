@@ -48,6 +48,10 @@ EXPOSE 8000
 
 ENTRYPOINT [ "/app/scripts/entrypoint.sh" ]
 
-CMD ["gunicorn", "app:app", "-w", "4", "-k", "uvicorn.workers.UvicornH11Worker", \
+CMD ["gunicorn", "app:app", \
+    "-w", "4", \
+    "-k", "uvicorn.workers.UvicornWorker", \
     "--bind", "0.0.0.0:8000", \
-    "--access-logfile", "-"]
+    "--access-logfile", "-", \
+    "--preload", \
+     "--worker-tmp-dir", "/dev/shm"]
