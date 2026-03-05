@@ -3,7 +3,7 @@ from fastapi import APIRouter, status
 from database.models import Book
 from schemas import BookCreate, BookRead
 
-from .dependencies import BookCreateDp, BookIDDp, BooksListDp
+from .dependencies import BookCreateDep, BookIDDep, BooksListDep
 
 router = APIRouter(
     prefix="/books",
@@ -16,7 +16,7 @@ router = APIRouter(
     response_model=BookCreate,
     status_code=status.HTTP_201_CREATED,
 )
-async def create_book(book_create: BookCreateDp) -> Book:
+async def create_book(book_create: BookCreateDep) -> Book:
     return book_create
 
 
@@ -25,7 +25,7 @@ async def create_book(book_create: BookCreateDp) -> Book:
     response_model=list[BookRead],
     status_code=status.HTTP_200_OK,
 )
-async def get_books(books: BooksListDp) -> list[Book]:
+async def get_books(books: BooksListDep) -> list[Book]:
     return books
 
 
@@ -34,5 +34,5 @@ async def get_books(books: BooksListDp) -> list[Book]:
     response_model=BookRead,
     status_code=status.HTTP_200_OK,
 )
-def get_book_by_id(book: BookIDDp) -> Book:
+def get_book_by_id(book: BookIDDep) -> Book:
     return book

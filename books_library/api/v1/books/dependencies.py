@@ -15,24 +15,24 @@ def repository_provider(session: AsyncSessionDp) -> BookRepository:
     return BookRepository(session)
 
 
-RepositoryDp = Annotated[BookRepository, Depends(repository_provider)]
+RepositoryDep = Annotated[BookRepository, Depends(repository_provider)]
 
 
-async def create_book(book_create: BookCreate, repo: RepositoryDp) -> Book:
+async def create_book(book_create: BookCreate, repo: RepositoryDep) -> Book:
     return await repo.create(book_create=book_create)
 
 
-BookCreateDp = Annotated[Book, Depends(create_book)]
+BookCreateDep = Annotated[Book, Depends(create_book)]
 
 
-async def get_books_list(book_repo: RepositoryDp) -> list[Book]:
+async def get_books_list(book_repo: RepositoryDep) -> list[Book]:
     return await book_repo.list()
 
 
-BooksListDp = Annotated[list[Book], Depends(get_books_list)]
+BooksListDep = Annotated[list[Book], Depends(get_books_list)]
 
 
-async def get_book_by_id(book_id: UUID, book_repo: RepositoryDp) -> Book:
+async def get_book_by_id(book_id: UUID, book_repo: RepositoryDep) -> Book:
     book = await book_repo.get_by_id(book_id=book_id)
     if book is not None:
         return book
@@ -41,4 +41,4 @@ async def get_book_by_id(book_id: UUID, book_repo: RepositoryDp) -> Book:
     )
 
 
-BookIDDp = Annotated[Book, Depends(get_book_by_id)]
+BookIDDep = Annotated[Book, Depends(get_book_by_id)]
