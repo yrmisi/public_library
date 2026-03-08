@@ -4,14 +4,14 @@ from uuid import UUID
 from fastapi import Depends
 
 from database.models import Book
-from dependencies.session import AsyncSessionDp
+from dependencies.session import AsyncSessionDep
+from exceptions import BookNotFoundError
 from schemas import BookCreate
 
-from .exceptions import BookNotFoundError
 from .repositories import BookRepository
 
 
-def repository_provider(session: AsyncSessionDp) -> BookRepository:
+def repository_provider(session: AsyncSessionDep) -> BookRepository:
     return BookRepository(session)
 
 
