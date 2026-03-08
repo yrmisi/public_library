@@ -20,6 +20,7 @@ services:
     build:
       context: .
       dockerfile: docker_build/books_library/Dockerfile
+    image: public-library-web
     container_name: web
     shm_size: "256mb" # обязательно при опции "--worker-tmp-dir /dev/shm" в Dockerfile
     restart: unless-stopped
