@@ -1,4 +1,4 @@
-from .authors import AuthorCreate, AuthorRead
+from .authors import AuthorCreate, AuthorRead, AuthorUpdate
 from .books import BookCreate, BookRead, BookUpdate
 
 __all__ = [
@@ -7,4 +7,5 @@ __all__ = [
     "BookUpdate",
     "AuthorCreate",
     "AuthorRead",
+    "AuthorUpdate",
 ]
