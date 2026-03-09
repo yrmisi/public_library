@@ -6,7 +6,7 @@ from fastapi import Depends
 from database.models import Author
 from dependencies.session import AsyncSessionDep
 from exceptions import AuthorNotFoundError
-from schemas import AuthorCreate
+from schemas import AuthorCreate, AuthorUpdate
 
 from .repositories import AuthorRepository
 
@@ -33,7 +33,7 @@ AuthorsListDep = Annotated[list[Author], Depends(get_authors_list)]
 
 
 async def get_author_by_id(author_id: UUID, author_repo: AuthorRepositoryDep) -> Author:
-    author = await author_repo.get_by_id(author_id=author_id)
+    author: Author | None = await author_repo.get_by_id(author_id=author_id)
 
     if author is not None:
         return author
@@ -41,3 +41,27 @@ async def get_author_by_id(author_id: UUID, author_repo: AuthorRepositoryDep) ->
 
 
 AuthorIDDep = Annotated[Author, Depends(get_author_by_id)]
+
+
+async def update_author(
+    author_id: UUID,
+    author_update: AuthorUpdate,
+    author_repo: AuthorRepositoryDep,
+) -> Author:
+    author: Author | None = await author_repo.get_by_id(author_id=author_id)
+
+    if author is None:
+        raise AuthorNotFoundError(author_id=author_id)
+
+    update_data: dict[str, str | bool] = author_update.model_dump(exclude_unset=True)
+
+    for key, val in update_data.items():
+        setattr(author, key, val)
+
+    await author_repo.session.commit()
+    await author_repo.session.refresh(author)
+
+    return author
+
+
+AuthorUpdateDep = Annotated[Author, Depends(update_author)]
