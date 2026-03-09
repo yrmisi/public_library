@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status
 
 from database.models import Author
-from schemas import AuthorCreate, AuthorRead, AuthorUpdate
+from schemas import AuthorCreate, AuthorRead
 
 from .dependencies import AuthorCreateDep, AuthorIDDep, AuthorsListDep, AuthorUpdateDep
 
@@ -40,7 +40,7 @@ async def get_author_by_id(author: AuthorIDDep) -> Author:
 
 @router.patch(
     "/{author_id}",
-    response_model=AuthorUpdate,
+    response_model=AuthorRead,
     status_code=status.HTTP_200_OK,
 )
 async def update_author(author: AuthorUpdateDep) -> Author:
