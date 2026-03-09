@@ -1,9 +1,9 @@
 from fastapi import APIRouter, status
 
 from database.models import Author
-from schemas import AuthorCreate, AuthorRead
+from schemas import AuthorCreate, AuthorRead, AuthorUpdate
 
-from .dependencies import AuthorCreateDep, AuthorIDDep, AuthorsListDep
+from .dependencies import AuthorCreateDep, AuthorIDDep, AuthorsListDep, AuthorUpdateDep
 
 router = APIRouter(
     prefix="/authors",
@@ -35,4 +35,13 @@ async def get_author_list(authors: AuthorsListDep) -> list[Author]:
     status_code=status.HTTP_200_OK,
 )
 async def get_author_by_id(author: AuthorIDDep) -> Author:
+    return author
+
+
+@router.patch(
+    "/{author_id}",
+    response_model=AuthorUpdate,
+    status_code=status.HTTP_202_ACCEPTED,
+)
+async def update_author(author: AuthorUpdateDep) -> Author:
     return author
