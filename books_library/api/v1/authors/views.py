@@ -41,7 +41,7 @@ async def get_author_by_id(author: AuthorIDDep) -> Author:
 @router.patch(
     "/{author_id}",
     response_model=AuthorUpdate,
-    status_code=status.HTTP_202_ACCEPTED,
+    status_code=status.HTTP_200_OK,
 )
 async def update_author(author: AuthorUpdateDep) -> Author:
     return author

@@ -41,7 +41,7 @@ async def get_book_by_id(book: BookIDDep) -> Book:
 @router.patch(
     "/{book_id}",
     response_model=BookUpdate,
-    status_code=status.HTTP_202_ACCEPTED,
+    status_code=status.HTTP_200_OK,
 )
 async def update_book(book: BookUpdateDep) -> Book:
     return book
