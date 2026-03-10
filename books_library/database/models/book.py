@@ -2,7 +2,7 @@ from datetime import date
 from typing import TYPE_CHECKING
 from uuid import UUID
 
-from sqlalchemy import ForeignKey, String, Text
+from sqlalchemy import ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base
@@ -31,6 +31,12 @@ class Book(Base):
         nullable=True,
     )
     pub_date: Mapped[date]
+    volumes_count: Mapped[int] = mapped_column(
+        Integer,
+        default=1,
+        server_default="1",
+        nullable=False,
+    )
 
     author: Mapped["Author"] = relationship(
         "Author",
