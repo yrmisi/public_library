@@ -14,6 +14,22 @@ class BookBase(BaseModel):
     title: str
     pub_date: date
     short_description: Title | None = None
+    volumes_count: int = 1
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "id": str(uuid7()),
+                    "author_id": str(uuid7()),
+                    "title": "String",
+                    "pub_date": date(2026, 3, 9).isoformat(),
+                    "short_description": "String",
+                    "volumes_count": 1,
+                }
+            ]
+        }
+    )
 
 
 class BookCreate(BookBase):
@@ -44,6 +60,7 @@ class BookUpdate(BookBase):
                     "title": "String",
                     "pub_date": date(2026, 3, 9).isoformat(),
                     "short_description": "String",
+                    "volumes_count": 1,
                 },
             ]
         },
