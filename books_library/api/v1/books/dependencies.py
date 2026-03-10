@@ -4,11 +4,12 @@ from uuid import UUID
 
 from fastapi import Depends
 
-from database.models import Book
+from database.models import Author, Book
 from dependencies.session import AsyncSessionDep
-from exceptions import BookNotFoundError
+from exceptions import AuthorNotFoundError, BookNotFoundError
 from schemas import BookCreate, BookUpdate
 
+from ..authors.dependencies import AuthorRepositoryDep
 from .repositories import BookRepository
 
 
@@ -19,8 +20,16 @@ def repository_provider(session: AsyncSessionDep) -> BookRepository:
 BookRepositoryDep = Annotated[BookRepository, Depends(repository_provider)]
 
 
-async def create_book(book_create: BookCreate, repo: BookRepositoryDep) -> Book:
-    return await repo.create(book_create=book_create)
+async def create_book(
+    book_create: BookCreate,
+    book_repo: BookRepositoryDep,
+    author_repo: AuthorRepositoryDep,
+) -> Book:
+    author: Author | None = await author_repo.get_by_id(author_id=book_create.author_id)
+    if author is None:
+        raise AuthorNotFoundError(author_id=book_create.author_id)
+
+    return await book_repo.create(book_create=book_create)
 
 
 BookCreateDep = Annotated[Book, Depends(create_book)]
