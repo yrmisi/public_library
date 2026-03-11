@@ -1,8 +1,8 @@
 from datetime import date
 from typing import Annotated
-from uuid import UUID
+from uuid import UUID, uuid7
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 Title = Annotated[str, Field(min_length=1, max_length=500)]
 
@@ -10,8 +10,26 @@ Title = Annotated[str, Field(min_length=1, max_length=500)]
 class BookBase(BaseModel):
     """Base class schema."""
 
+    author_id: UUID
     title: str
     pub_date: date
+    short_description: Title | None = None
+    volumes_count: int = 1
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "id": str(uuid7()),
+                    "author_id": str(uuid7()),
+                    "title": "String",
+                    "pub_date": date(2026, 3, 9).isoformat(),
+                    "short_description": "String",
+                    "volumes_count": 1,
+                }
+            ]
+        }
+    )
 
 
 class BookCreate(BookBase):
@@ -26,7 +44,26 @@ class BookRead(BookBase):
     id: UUID
 
 
-class BookUpdate(BookBase):
+class BookUpdate(BaseModel):
     """Update a book."""
 
-    title: Title
+    author_id: UUID | None = None
+    title: Title | None = None
+    pub_date: date | None = None
+    short_description: Title | None = None
+    volumes_count: int | None = None
+
+    model_config = ConfigDict(
+        extra="ignore",
+        json_schema_extra={
+            "examples": [
+                {
+                    "author_id": str(uuid7()),
+                    "title": "String",
+                    "pub_date": date(2026, 3, 9).isoformat(),
+                    "short_description": "String",
+                    "volumes_count": 1,
+                },
+            ]
+        },
+    )

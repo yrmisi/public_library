@@ -1,9 +1,10 @@
 from collections.abc import AsyncIterable
 from typing import Annotated
 
-from database import async_session
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from database import async_session
 
 
 async def session_dependency() -> AsyncIterable[AsyncSession]:
@@ -11,4 +12,4 @@ async def session_dependency() -> AsyncIterable[AsyncSession]:
         yield session
 
 
-AsyncSessionDp = Annotated[AsyncSession, Depends(session_dependency)]
+AsyncSessionDep = Annotated[AsyncSession, Depends(session_dependency)]

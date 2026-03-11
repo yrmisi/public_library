@@ -2,9 +2,7 @@ from uuid import UUID
 
 from fastapi import status
 
-
-class libraryBaseError(Exception):
-    pass
+from .base import libraryBaseError
 
 
 class BookNotFoundError(libraryBaseError):
@@ -15,6 +13,6 @@ class BookNotFoundError(libraryBaseError):
         status_code: int = status.HTTP_404_NOT_FOUND,
     ) -> None:
         self.book_id = book_id
-        self.detail = detail
+        self.detail = detail.format(book_id=self.book_id)
         self.status_code = status_code
-        super().__init__(self.detail)
+        super().__init__(self.detail, self.status_code)
