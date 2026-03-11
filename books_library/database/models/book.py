@@ -41,5 +41,5 @@ class Book(Base):
     author: Mapped["Author"] = relationship(
         "Author",
         back_populates="books",
-        lazy="joined",
+        lazy="selectin",
     )
