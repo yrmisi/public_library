@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status
 
 from database.models import Book
-from schemas import BookCreate, BookRead
+from schemas import BookRead
 
 from .dependencies import BookCreateDep, BookIDDep, BooksListDep, BookUpdateDep
 
@@ -13,7 +13,7 @@ router = APIRouter(
 
 @router.post(
     "/",
-    response_model=BookCreate,
+    response_model=BookRead,
     status_code=status.HTTP_201_CREATED,
 )
 async def create_book(book_create: BookCreateDep) -> Book:

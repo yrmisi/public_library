@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status
 
 from database.models import Author
-from schemas import AuthorCreate, AuthorRead
+from schemas import AuthorRead
 
 from .dependencies import AuthorCreateDep, AuthorIDDep, AuthorsListDep, AuthorUpdateDep
 
@@ -13,7 +13,7 @@ router = APIRouter(
 
 @router.post(
     "/",
-    response_model=AuthorCreate,
+    response_model=AuthorRead,
     status_code=status.HTTP_201_CREATED,
 )
 async def create_author(book_create: AuthorCreateDep) -> Author:
