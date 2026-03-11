@@ -44,12 +44,14 @@ class BookRead(BookBase):
     id: UUID
 
 
-class BookUpdate(BookBase):
+class BookUpdate(BaseModel):
     """Update a book."""
 
     author_id: UUID | None = None
     title: Title | None = None
     pub_date: date | None = None
+    short_description: Title | None = None
+    volumes_count: int | None = None
 
     model_config = ConfigDict(
         extra="ignore",
