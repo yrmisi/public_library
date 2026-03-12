@@ -51,10 +51,6 @@ class BookService:
 
         update_data: dict[str, str | date] = book_update.model_dump(exclude_unset=True)
 
-        for key, val in update_data.items():
-            setattr(book, key, val)
-
-        await self.book_repo.session.commit()
-        await self.book_repo.session.refresh(book)
+        await self.book_repo.update(book, update_data)
 
         return book

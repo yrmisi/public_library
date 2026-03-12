@@ -1,3 +1,4 @@
+from datetime import date
 from uuid import UUID
 
 from sqlalchemy import select
@@ -27,3 +28,14 @@ class BookRepository:
         await self.session.commit()
 
         return book
+
+    async def update(
+        self,
+        book: Book,
+        update_data: dict[str, str | date],
+    ) -> None:
+        for key, val in update_data.items():
+            setattr(book, key, val)
+
+        await self.session.commit()
+        await self.session.refresh(book)
