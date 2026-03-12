@@ -27,3 +27,14 @@ class AuthorRepository:
         await self.session.commit()
 
         return author
+
+    async def update(
+        self,
+        author: Author,
+        update_data: dict[str, str | bool],
+    ) -> None:
+        for key, val in update_data.items():
+            setattr(author, key, val)
+
+        await self.session.commit()
+        await self.session.refresh(author)

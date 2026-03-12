@@ -37,10 +37,6 @@ class AuthorService:
 
         update_data: dict[str, str | bool] = author_update.model_dump(exclude_unset=True)
 
-        for key, val in update_data.items():
-            setattr(author, key, val)
-
-        await self.author_repo.session.commit()
-        await self.author_repo.session.refresh(author)
+        await self.author_repo.update(author, update_data)
 
         return author
