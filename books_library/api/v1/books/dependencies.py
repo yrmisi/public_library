@@ -19,14 +19,14 @@ def repository_provider_dependency(session: AsyncSessionDep) -> BookRepository:
 BookRepositoryDep = Annotated[BookRepository, Depends(repository_provider_dependency)]
 
 
-def service_provider_dependency(
+def book_service_dependency(
     book_repo: BookRepositoryDep,
     author_repo: AuthorRepositoryDep,
 ) -> BookService:
     return BookService(book_repo, author_repo)
 
 
-BookServiceDep = Annotated[BookService, Depends(service_provider_dependency)]
+BookServiceDep = Annotated[BookService, Depends(book_service_dependency)]
 
 
 async def create_book_dependency(
