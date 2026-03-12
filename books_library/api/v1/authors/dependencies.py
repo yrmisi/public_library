@@ -22,21 +22,21 @@ def author_service_dependency(author_repo: AuthorRepositoryDep) -> AuthorService
     return AuthorService(author_repo)
 
 
-BookServiceDep = Annotated[AuthorService, Depends(author_service_dependency)]
+AuthorServiceDep = Annotated[AuthorService, Depends(author_service_dependency)]
 
 
 async def create_author_dependency(
     author_create: AuthorCreate,
-    book_service: BookServiceDep,
+    author_service: AuthorServiceDep,
 ) -> Author:
-    return await book_service.create_author(author_create)
+    return await author_service.create_author(author_create)
 
 
 AuthorCreateDep = Annotated[Author, Depends(create_author_dependency)]
 
 
-async def get_authors_list_dependency(book_service: BookServiceDep) -> list[Author]:
-    return await book_service.get_authors_list()
+async def get_authors_list_dependency(author_service: AuthorServiceDep) -> list[Author]:
+    return await author_service.get_authors_list()
 
 
 AuthorsListDep = Annotated[list[Author], Depends(get_authors_list_dependency)]
@@ -44,9 +44,9 @@ AuthorsListDep = Annotated[list[Author], Depends(get_authors_list_dependency)]
 
 async def get_author_by_id_dependency(
     author_id: UUID,
-    book_service: BookServiceDep,
+    author_service: AuthorServiceDep,
 ) -> Author:
-    return await book_service.get_author_by_id(author_id)
+    return await author_service.get_author_by_id(author_id)
 
 
 AuthorIDDep = Annotated[Author, Depends(get_author_by_id_dependency)]
@@ -55,9 +55,9 @@ AuthorIDDep = Annotated[Author, Depends(get_author_by_id_dependency)]
 async def update_author_dependency(
     author_id: UUID,
     author_update: AuthorUpdate,
-    book_service: BookServiceDep,
+    author_service: AuthorServiceDep,
 ) -> Author:
-    return await book_service.update_author(author_id, author_update)
+    return await author_service.update_author(author_id, author_update)
 
 
 AuthorUpdateDep = Annotated[Author, Depends(update_author_dependency)]
