@@ -5,63 +5,59 @@ from fastapi import Depends
 
 from database.models import Author
 from dependencies.session import AsyncSessionDep
-from exceptions import AuthorNotFoundError
 from schemas import AuthorCreate, AuthorUpdate
 
 from .repositories import AuthorRepository
+from .services import AuthorService
 
 
-def repository_provider(session: AsyncSessionDep) -> AuthorRepository:
+def author_repository_provider(session: AsyncSessionDep) -> AuthorRepository:
     return AuthorRepository(session)
 
 
-AuthorRepositoryDep = Annotated[AuthorRepository, Depends(repository_provider)]
+AuthorRepositoryDep = Annotated[AuthorRepository, Depends(author_repository_provider)]
 
 
-async def create_author(author_create: AuthorCreate, author_repo: AuthorRepositoryDep) -> Author:
-    return await author_repo.create(author_create=author_create)
+def author_service_dependency(author_repo: AuthorRepositoryDep) -> AuthorService:
+    return AuthorService(author_repo)
 
 
-AuthorCreateDep = Annotated[Author, Depends(create_author)]
+BookServiceDep = Annotated[AuthorService, Depends(author_service_dependency)]
 
 
-async def get_authors_list(author_repo: AuthorRepositoryDep) -> list[Author]:
-    return await author_repo.list()
+async def create_author_dependency(
+    author_create: AuthorCreate,
+    book_service: BookServiceDep,
+) -> Author:
+    return await book_service.create_author(author_create)
 
 
-AuthorsListDep = Annotated[list[Author], Depends(get_authors_list)]
+AuthorCreateDep = Annotated[Author, Depends(create_author_dependency)]
 
 
-async def get_author_by_id(author_id: UUID, author_repo: AuthorRepositoryDep) -> Author:
-    author: Author | None = await author_repo.get_by_id(author_id=author_id)
-
-    if author is not None:
-        return author
-    raise AuthorNotFoundError(author_id=author_id)
+async def get_authors_list_dependency(book_service: BookServiceDep) -> list[Author]:
+    return await book_service.get_authors_list()
 
 
-AuthorIDDep = Annotated[Author, Depends(get_author_by_id)]
+AuthorsListDep = Annotated[list[Author], Depends(get_authors_list_dependency)]
 
 
-async def update_author(
+async def get_author_by_id_dependency(
+    author_id: UUID,
+    book_service: BookServiceDep,
+) -> Author:
+    return await book_service.get_author_by_id(author_id)
+
+
+AuthorIDDep = Annotated[Author, Depends(get_author_by_id_dependency)]
+
+
+async def update_author_dependency(
     author_id: UUID,
     author_update: AuthorUpdate,
-    author_repo: AuthorRepositoryDep,
+    book_service: BookServiceDep,
 ) -> Author:
-    author: Author | None = await author_repo.get_by_id(author_id=author_id)
-
-    if author is None:
-        raise AuthorNotFoundError(author_id=author_id)
-
-    update_data: dict[str, str | bool] = author_update.model_dump(exclude_unset=True)
-
-    for key, val in update_data.items():
-        setattr(author, key, val)
-
-    await author_repo.session.commit()
-    await author_repo.session.refresh(author)
-
-    return author
+    return await book_service.update_author(author_id, author_update)
 
 
-AuthorUpdateDep = Annotated[Author, Depends(update_author)]
+AuthorUpdateDep = Annotated[Author, Depends(update_author_dependency)]
