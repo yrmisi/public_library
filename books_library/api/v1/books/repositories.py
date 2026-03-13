@@ -3,6 +3,7 @@ from uuid import UUID
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from database.models import Book
 from schemas import BookCreate
@@ -13,7 +14,7 @@ class BookRepository:
         self.session = session
 
     async def list(self) -> list[Book]:
-        stmt = select(Book).order_by(Book.id)
+        stmt = select(Book).options(selectinload(Book.author)).order_by(Book.id)
         books = await self.session.scalars(stmt)
 
         return list(books.all())

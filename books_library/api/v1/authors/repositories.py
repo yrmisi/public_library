@@ -2,6 +2,7 @@ from uuid import UUID
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from database.models import Author
 from schemas import AuthorCreate
@@ -12,7 +13,7 @@ class AuthorRepository:
         self.session = session
 
     async def list(self) -> list[Author]:
-        stmt = select(Author).order_by(Author.id)
+        stmt = select(Author).options(selectinload(Author.books)).order_by(Author.id)
         authors = await self.session.scalars(stmt)
 
         return list(authors.all())
