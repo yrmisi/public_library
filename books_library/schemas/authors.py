@@ -1,15 +1,19 @@
 from datetime import datetime
+from typing import Annotated
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
+
+FirstName = Annotated[str, Field(min_length=1, max_length=150)]
+LastPatronymicName = Annotated[str, Field(min_length=1, max_length=256)]
 
 
 class AuthorBase(BaseModel):
     """Base class schema author."""
 
-    first_name: str
-    patronymic_name: str | None = None
-    last_name: str
+    first_name: FirstName
+    patronymic_name: LastPatronymicName | None = None
+    last_name: LastPatronymicName
 
 
 class AuthorCreate(AuthorBase):
@@ -30,8 +34,8 @@ class AuthorRead(AuthorBase):
 class AuthorUpdate(BaseModel):
     """Updating the author."""
 
-    first_name: str | None = None
-    last_name: str | None = None
+    first_name: FirstName | None = None
+    last_name: LastPatronymicName | None = None
     is_deleted: bool | None = None
 
     model_config = ConfigDict(
