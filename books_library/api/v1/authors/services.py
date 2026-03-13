@@ -30,13 +30,14 @@ class AuthorService:
         author_id: UUID,
         author_update: AuthorUpdate,
     ) -> Author:
-        author: Author | None = await self.author_repo.get_by_id(author_id=author_id)
+        async with self.author_repo.session.begin():
+            author: Author | None = await self.author_repo.get_by_id(author_id=author_id)
 
-        if author is None:
-            raise AuthorNotFoundError(author_id=author_id)
+            if author is None:
+                raise AuthorNotFoundError(author_id=author_id)
 
-        update_data: dict[str, str | bool] = author_update.model_dump(exclude_unset=True)
+            update_data: dict[str, str | bool] = author_update.model_dump(exclude_unset=True)
 
-        await self.author_repo.update(author, update_data)
+            await self.author_repo.update(author, update_data)
 
-        return author
+            return author

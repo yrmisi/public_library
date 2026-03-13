@@ -22,11 +22,14 @@ class BookService:
         self,
         book_create: BookCreate,
     ) -> Book:
-        author: Author | None = await self.author_repo.get_by_id(author_id=book_create.author_id)
-        if author is None:
-            raise AuthorNotFoundError(author_id=book_create.author_id)
+        async with self.book_repo.session.begin():
+            author: Author | None = await self.author_repo.get_by_id(
+                author_id=book_create.author_id
+            )
+            if author is None:
+                raise AuthorNotFoundError(author_id=book_create.author_id)
 
-        return await self.book_repo.create(book_create=book_create)
+            return await self.book_repo.create(book_create=book_create)
 
     async def get_books_list(self) -> list[Book]:
         return await self.book_repo.list()
@@ -44,13 +47,14 @@ class BookService:
         book_id: UUID,
         book_update: BookUpdate,
     ) -> Book:
-        book: Book | None = await self.book_repo.get_by_id(book_id=book_id)
+        async with self.book_repo.session.begin():
+            book: Book | None = await self.book_repo.get_by_id(book_id=book_id)
 
-        if book is None:
-            raise BookNotFoundError(book_id=book_id)
+            if book is None:
+                raise BookNotFoundError(book_id=book_id)
 
-        update_data: dict[str, str | date] = book_update.model_dump(exclude_unset=True)
+            update_data: dict[str, str | date] = book_update.model_dump(exclude_unset=True)
 
-        await self.book_repo.update(book, update_data)
+            await self.book_repo.update(book, update_data)
 
-        return book
+            return book
