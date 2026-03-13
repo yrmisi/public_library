@@ -16,8 +16,8 @@ router = APIRouter(
     response_model=AuthorRead,
     status_code=status.HTTP_201_CREATED,
 )
-async def create_author(book_create: AuthorCreateDep) -> Author:
-    return book_create
+async def create_author(author_create: AuthorCreateDep) -> Author:
+    return author_create
 
 
 @router.get(
