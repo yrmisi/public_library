@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
 
@@ -14,7 +14,7 @@ class SQLAlchemyConfig(BaseModel):
 
 
 class DatabaseConfig(BaseSettings):
-    password: Annotated[str, Field(alias="POSTGRES_PASSWORD")] = "pass"
+    password: Annotated[SecretStr, Field(alias="POSTGRES_PASSWORD")]
     user: Annotated[str, Field(alias="POSTGRES_USER")] = "user"
     host: Annotated[str, Field(alias="POSTGRES_HOST")] = "localhost"
     port: int = 5432
@@ -32,7 +32,7 @@ class DatabaseConfig(BaseSettings):
         return URL.create(
             drivername="postgresql+asyncpg",
             username=self.user,
-            password=self.password,
+            password=self.password.get_secret_value(),
             host=self.host,
             port=self.port,
             database=self.name,
