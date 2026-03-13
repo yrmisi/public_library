@@ -2,7 +2,7 @@ from datetime import date
 from typing import Annotated
 from uuid import UUID, uuid7
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
 
 Title = Annotated[str, Field(min_length=1, max_length=500)]
 
@@ -31,6 +31,13 @@ class BookBase(BaseModel):
         }
     )
 
+    @field_validator("pub_date", mode="before")
+    @classmethod
+    def val_pub_date(cls, val):
+        if val and val > date.today():
+            raise ValidationError("The date cannot be in the future")
+        return val
+
 
 class BookCreate(BookBase):
     """Create a new book."""
@@ -44,7 +51,7 @@ class BookRead(BookBase):
     id: UUID
 
 
-class BookUpdate(BaseModel):
+class BookUpdate(BookBase):
     """Update a book."""
 
     author_id: UUID | None = None
