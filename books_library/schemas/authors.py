@@ -27,7 +27,7 @@ class AuthorRead(AuthorBase):
     created_at: datetime
 
 
-class AuthorUpdate(AuthorBase):
+class AuthorUpdate(BaseModel):
     """Updating the author."""
 
     first_name: str | None = None
