@@ -1,3 +1,4 @@
+from typing import Any
 from uuid import UUID
 
 from database.models import Author
@@ -36,7 +37,7 @@ class AuthorService:
             if author is None:
                 raise AuthorNotFoundError(author_id=author_id)
 
-            update_data: dict[str, str | bool] = author_update.model_dump(exclude_unset=True)
+            update_data: dict[str, Any] = author_update.model_dump(exclude_unset=True)
 
             await self.author_repo.update(author, update_data)
 

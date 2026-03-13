@@ -1,4 +1,4 @@
-from datetime import date
+from typing import Any
 from uuid import UUID
 
 from database.models import Author, Book
@@ -53,7 +53,7 @@ class BookService:
             if book is None:
                 raise BookNotFoundError(book_id=book_id)
 
-            update_data: dict[str, str | date] = book_update.model_dump(exclude_unset=True)
+            update_data: dict[str, Any] = book_update.model_dump(exclude_unset=True)
 
             await self.book_repo.update(book, update_data)
 
