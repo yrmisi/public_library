@@ -8,6 +8,7 @@ from database import async_engine
 
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncGenerator[None, Any]:
+    """Lifespan of the application."""
 
     yield
     await async_engine.dispose()
