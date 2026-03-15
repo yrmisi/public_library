@@ -8,12 +8,16 @@ from .path import ENVS_DIR
 
 
 class SQLAlchemyConfig(BaseModel):
+    """Configuration for SQLAlchemy."""
+
     pool_size: int = 20
     max_overflow: int = 5
     echo: bool = False
 
 
 class DatabaseConfig(BaseSettings):
+    """Configuration for the database."""
+
     password: Annotated[SecretStr, Field(alias="POSTGRES_PASSWORD")]
     user: Annotated[str, Field(alias="POSTGRES_USER")] = "user"
     host: Annotated[str, Field(alias="POSTGRES_HOST")] = "localhost"
@@ -29,6 +33,7 @@ class DatabaseConfig(BaseSettings):
 
     @property
     def url_sqla_pg_async(self) -> URL:
+        """Create a URL for the database."""
         return URL.create(
             drivername="postgresql+asyncpg",
             username=self.user,
