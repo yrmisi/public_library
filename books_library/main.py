@@ -4,6 +4,7 @@ from config import settings
 
 
 def main():
+    """Run the FastAPI application using uvicorn."""
     uvicorn.run(
         "app:app",
         host=settings.app.host,
