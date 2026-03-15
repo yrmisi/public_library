@@ -6,12 +6,15 @@ from .base import libraryBaseError
 
 
 class AuthorNotFoundError(libraryBaseError):
+    """Error raised when an author with the given ID does not exist."""
+
     def __init__(
         self,
         author_id: UUID,
         detail: str = "Author not found, ID - {author_id}",
         status_code: int = status.HTTP_404_NOT_FOUND,
     ) -> None:
+        """Initialize the AuthorNotFoundError."""
         self.author_id = author_id
         self.detail = detail.format(author_id=self.author_id)
         self.status_code = status_code

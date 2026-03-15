@@ -5,7 +5,8 @@ from fastapi.responses import JSONResponse
 from .base import libraryBaseError
 
 
-async def library_exception_handler(request: Request, exc: Exception):
+async def library_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    """Convert libraryBaseError and unexpected exceptions into JSON HTTP responses."""
     if isinstance(exc, libraryBaseError):
         headers: dict[str, str] | None = getattr(exc, "headers", None)
         return JSONResponse(
