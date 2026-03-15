@@ -10,11 +10,14 @@ from .repositories import BookRepository
 
 
 class BookService:
+    """Business logic for managing books."""
+
     def __init__(
         self,
         book_repo: BookRepository,
         author_repo: AuthorRepository,
     ) -> None:
+        """Initialize the BookService with book and author repositories."""
         self.book_repo = book_repo
         self.author_repo = author_repo
 
@@ -22,6 +25,7 @@ class BookService:
         self,
         book_create: BookCreate,
     ) -> Book:
+        """Create and persist a new book."""
         async with self.book_repo.session.begin():
             author: Author | None = await self.author_repo.get_by_id(
                 author_id=book_create.author_id
@@ -32,6 +36,7 @@ class BookService:
             return await self.book_repo.create(book_create=book_create)
 
     async def get_books_list(self) -> list[Book]:
+        """Return all books from the repository."""
         return await self.book_repo.list()
 
     async def get_book_by_id(self, book_id: UUID) -> Book:
@@ -47,6 +52,7 @@ class BookService:
         book_id: UUID,
         book_update: BookUpdate,
     ) -> Book:
+        """Update an existing book and return the updated instance."""
         async with self.book_repo.session.begin():
             book: Book | None = await self.book_repo.get_by_id(book_id=book_id)
 
