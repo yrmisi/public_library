@@ -17,6 +17,7 @@ router = APIRouter(
     status_code=status.HTTP_201_CREATED,
 )
 async def create_book(book: BookCreateDep) -> Book:
+    """Create a new book using the provided data."""
     return book
 
 
@@ -26,6 +27,7 @@ async def create_book(book: BookCreateDep) -> Book:
     status_code=status.HTTP_200_OK,
 )
 async def get_books(books: BooksListDep) -> list[Book]:
+    """Return a list of all books."""
     return books
 
 
@@ -35,6 +37,7 @@ async def get_books(books: BooksListDep) -> list[Book]:
     status_code=status.HTTP_200_OK,
 )
 async def get_book_by_id(book: BookIDDep) -> Book:
+    """Return a book by its ID."""
     return book
 
 
@@ -44,4 +47,5 @@ async def get_book_by_id(book: BookIDDep) -> Book:
     status_code=status.HTTP_200_OK,
 )
 async def update_book(book: BookUpdateDep) -> Book:
+    """Update an existing book and return the updated instance."""
     return book
