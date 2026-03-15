@@ -12,6 +12,7 @@ from .services import AuthorService
 
 
 def author_repository_provider(session: AsyncSessionDep) -> AuthorRepository:
+    """Construct an AuthorRepository bound to the current database session."""
     return AuthorRepository(session)
 
 
@@ -19,6 +20,7 @@ AuthorRepositoryDep = Annotated[AuthorRepository, Depends(author_repository_prov
 
 
 def author_service_dependency(author_repo: AuthorRepositoryDep) -> AuthorService:
+    """Provide AuthorService wired with the author repository."""
     return AuthorService(author_repo)
 
 
@@ -29,6 +31,7 @@ async def create_author_dependency(
     author_create: AuthorCreate,
     author_service: AuthorServiceDep,
 ) -> Author:
+    """Create an author through the service layer."""
     return await author_service.create_author(author_create)
 
 
@@ -36,6 +39,7 @@ AuthorCreateDep = Annotated[Author, Depends(create_author_dependency)]
 
 
 async def get_authors_list_dependency(author_service: AuthorServiceDep) -> list[Author]:
+    """Fetch the list of all authors through the service layer."""
     return await author_service.get_authors_list()
 
 
@@ -46,6 +50,7 @@ async def get_author_by_id_dependency(
     author_id: UUID,
     author_service: AuthorServiceDep,
 ) -> Author:
+    """Fetch a single author by ID through the service layer."""
     return await author_service.get_author_by_id(author_id)
 
 
@@ -57,6 +62,7 @@ async def update_author_dependency(
     author_update: AuthorUpdate,
     author_service: AuthorServiceDep,
 ) -> Author:
+    """Update an existing author by ID through the service layer."""
     return await author_service.update_author(author_id, author_update)
 
 
