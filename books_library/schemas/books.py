@@ -12,7 +12,7 @@ VolumesCountType = Annotated[int, Field(ge=1, le=100)]
 
 
 class BookBase(BaseModel):
-    """Base class schema."""
+    """Base schema for book data."""
 
     author_id: UUID
     title: TitleShortDescType

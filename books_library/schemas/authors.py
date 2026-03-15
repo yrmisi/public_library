@@ -9,7 +9,7 @@ LastPatronymicName = Annotated[str, Field(min_length=1, max_length=256)]
 
 
 class AuthorBase(BaseModel):
-    """Base class schema author."""
+    """Base schema for author data."""
 
     first_name: FirstName
     patronymic_name: LastPatronymicName | None = None
