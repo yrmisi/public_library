@@ -17,6 +17,7 @@ router = APIRouter(
     status_code=status.HTTP_201_CREATED,
 )
 async def create_author(author_create: AuthorCreateDep) -> Author:
+    """Create a new author using the provided data."""
     return author_create
 
 
@@ -26,6 +27,7 @@ async def create_author(author_create: AuthorCreateDep) -> Author:
     status_code=status.HTTP_200_OK,
 )
 async def get_author_list(authors: AuthorsListDep) -> list[Author]:
+    """Return a list of all authors."""
     return authors
 
 
@@ -35,6 +37,7 @@ async def get_author_list(authors: AuthorsListDep) -> list[Author]:
     status_code=status.HTTP_200_OK,
 )
 async def get_author_by_id(author: AuthorIDDep) -> Author:
+    """Return an author by its ID."""
     return author
 
 
@@ -44,4 +47,5 @@ async def get_author_by_id(author: AuthorIDDep) -> Author:
     status_code=status.HTTP_200_OK,
 )
 async def update_author(author: AuthorUpdateDep) -> Author:
+    """Update an existing author and return the updated instance."""
     return author
