@@ -8,6 +8,7 @@ from database import async_session
 
 
 async def session_dependency() -> AsyncIterable[AsyncSession]:
+    """Provide an async SQLAlchemy session for a single request."""
     async with async_session() as session:
         yield session
 
