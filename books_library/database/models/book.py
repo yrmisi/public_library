@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class Book(Base):
-    """Model Book."""
+    """ORM model that represents a book in the library."""
 
     author_id: Mapped[UUID] = mapped_column(
         ForeignKey("authors.id", ondelete="CASCADE"),

@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 class Author(Base):
-    """The model describes data about the author."""
+    """ORM model that stores information about a book author."""
 
     __table_args__ = (
         UniqueConstraint(
