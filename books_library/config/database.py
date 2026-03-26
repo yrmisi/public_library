@@ -18,7 +18,7 @@ class SQLAlchemyConfig(BaseModel):
 class DatabaseConfig(BaseSettings):
     """Configuration for the database."""
 
-    password: Annotated[SecretStr, Field(alias="POSTGRES_PASSWORD")]
+    password: Annotated[SecretStr, Field(alias="POSTGRES_PASSWORD")] = SecretStr("")
     user: Annotated[str, Field(alias="POSTGRES_USER")] = "user"
     host: Annotated[str, Field(alias="POSTGRES_HOST")] = "localhost"
     port: int = 5432
