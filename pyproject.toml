@@ -8,6 +8,7 @@ dependencies = [
     "alembic>=1.18.4",
     "asyncpg>=0.31.0",
     "fastapi[standard]>=0.128.6",
+    "granian>=2.7.2",
     "gunicorn>=25.0.3",
     "pydantic>=2.12.5",
     "pydantic-settings>=2.13.1",
